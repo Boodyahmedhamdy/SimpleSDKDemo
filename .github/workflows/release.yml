@@ -9,6 +9,10 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
 
+    # Add this permissions block here:
+    permissions:
+      contents: write  # Allows the token to create tags and releases
+
     steps:
       # 1. Checkout the source code
       - name: Checkout Code
@@ -67,9 +71,20 @@ jobs:
 #      - name: Run Linter and Unit Tests
 #        run: ./gradlew lintRelease testReleaseUnitTest
 
-      # 8. Build the Unsigned Release APK
+      # 8. Build the Unsigned Release APK with Real-Time Console Logging
       - name: Build Unsigned Release APK
-        run: ./gradlew :app:assembleRelease
+        run: |
+          echo "=========================================================="
+          echo "  STARTING GRADLE BUILD: :app:assembleRelease  "
+          echo "  Timestamp: $(date -u)"
+          echo "=========================================================="
+          
+          # Run gradle with plain console formatting to make CI logs readable
+          ./gradlew :app:assembleRelease --console=plain --info
+          
+          echo "=========================================================="
+          echo "  GRADLE BUILD COMPLETED SUCCESSFULLY  "
+          echo "=========================================================="
 
       # 9. Diagnostic Log: Locate and inspect generated APKs
       - name: Log Build Artifacts
