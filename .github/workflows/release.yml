@@ -80,7 +80,7 @@ jobs:
           echo "=========================================================="
           
           # Run gradle with plain console formatting to make CI logs readable
-          ./gradlew :app:assembleRelease --console=plain --info
+          ./gradlew :app:assembleRelease
           
           echo "=========================================================="
           echo "  GRADLE BUILD COMPLETED SUCCESSFULLY  "
