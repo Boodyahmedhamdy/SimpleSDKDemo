@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":services:printer:api/release":[],":services:payment:impl/release":[],":services:cardreader:impl/release":[],":services:printer:impl/release":[],":services:cardreader:api/release":[]}'

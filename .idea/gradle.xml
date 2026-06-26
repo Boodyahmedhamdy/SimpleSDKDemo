@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/services" />
+            <option value="$PROJECT_DIR$/services/cardreader" />
+            <option value="$PROJECT_DIR$/services/cardreader/api" />
+            <option value="$PROJECT_DIR$/services/cardreader/impl" />
+            <option value="$PROJECT_DIR$/services/payment" />
+            <option value="$PROJECT_DIR$/services/payment/api" />
+            <option value="$PROJECT_DIR$/services/payment/impl" />
+            <option value="$PROJECT_DIR$/services/printer" />
+            <option value="$PROJECT_DIR$/services/printer/api" />
+            <option value="$PROJECT_DIR$/services/printer/impl" />
+            <option value="$PROJECT_DIR$/simple-sdk" />
+            <option value="$PROJECT_DIR$/simple-sdk-provider" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,13 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:CardReader-Api
+com.aah.sdk.simplesdk.services.cardreader.api
+module:CardReader-Impl
+com.aah.sdk.simplesdk.services.cardreader.impl
+module:Payment-Api
+com.aah.sdk.simplesdk.services.payment.impl
+module:Printer-Api
+com.aah.sdk.simplesdk.services.printer.api
+module:Printer-Impl
+com.aah.sdk.simplesdk.services.printer.impl
