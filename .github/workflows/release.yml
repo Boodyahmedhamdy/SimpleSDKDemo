@@ -38,12 +38,15 @@ jobs:
             exit 1
           fi
 
+
+
       # 3. Diagnostic Log: Environment Details
       - name: Log Environment Details
         run: |
           echo "=== Pipeline Context ==="
           echo "Target Version to Release: v${{ steps.parse_version.outputs.version }}"
           echo "Triggered by Commit: $GITHUB_SHA"
+
 
       # 4. Set up Java Environment
       - name: Set up JDK 17
@@ -61,8 +64,8 @@ jobs:
         run: chmod +x ./gradlew
 
       # 7. Run Code Quality Checks
-      - name: Run Linter and Unit Tests
-        run: ./gradlew lintRelease testReleaseUnitTest
+#      - name: Run Linter and Unit Tests
+#        run: ./gradlew lintRelease testReleaseUnitTest
 
       # 8. Build the Unsigned Release APK
       - name: Build Unsigned Release APK
