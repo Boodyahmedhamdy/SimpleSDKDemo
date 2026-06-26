@@ -26,11 +26,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    buildTypes {
+    /*buildTypes {
         release {
             isMinifyEnabled = true
         }
-    }
+    }*/
+
 
     // CHANGED: Group both release and debug variants into a single component
     publishing {
@@ -49,7 +50,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 
-    implementation("com.aah.sdk.services:cardreader-api:0.0.1")
+    implementation(libs.cardreader.api)
 }
 
 // CHANGED: Create one single publication coordinating both variants under version 0.0.1

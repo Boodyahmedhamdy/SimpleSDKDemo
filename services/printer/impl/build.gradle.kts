@@ -26,11 +26,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    buildTypes {
+/*    buildTypes {
         release {
             isMinifyEnabled = true
         }
-    }
+    }*/
 
     // Added: Configured AGP to package both release and debug variants into a single component
     publishing {
@@ -49,7 +49,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 
-    implementation(project(":services:printer:api"))
+    implementation(libs.printer.api)
 }
 
 // Added: Publication configuration linking variant components under version 0.0.1

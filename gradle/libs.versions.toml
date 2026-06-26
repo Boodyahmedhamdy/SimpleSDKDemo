@@ -4,15 +4,19 @@ coreKtx = "1.18.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-lifecycleRuntimeKtx = "2.11.0"
+lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.13.0"
 kotlin = "2.2.10"
 composeBom = "2026.02.01"
 appcompat = "1.7.1"
 material = "1.10.0"
+printerApi = "0.0.1"
+cardreaderApi = "0.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+cardreader-api = { module = "com.aah.sdk.services:cardreader-api", version.ref = "cardreaderApi" }
+cardreader-impl = { module = "com.aah.sdk.services:cardreader-impl", version.ref = "cardreaderApi" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -28,9 +32,12 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+printer-api = { module = "com.aah.sdk.services:printer-api", version.ref = "printerApi" }
+printer-impl = { module = "com.aah.sdk.services:printer-impl", version.ref = "printerApi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+android-fusedlibrary = { id = "com.android.fused-library", version.ref = "agp" }
 

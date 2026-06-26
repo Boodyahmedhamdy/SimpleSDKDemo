@@ -1,0 +1,96 @@
+name: Build and Release Android APK (Dynamic Version)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the source code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Extract and Validate Version from Commit Message
+      - name: Parse Commit Message for Version
+        id: parse_version
+        run: |
+          # Fetch the latest commit message
+          COMMIT_MSG=$(git log -1 --pretty=%B | xargs)
+          echo "Full Commit Message: '$COMMIT_MSG'"
+          
+          # Check if the commit starts with 'release-'
+          if [[ "$COMMIT_MSG" =~ ^release-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            VERSION="${BASH_REMATCH[1]}"
+            echo "SUCCESS: Valid semantic version detected: $VERSION"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          elif [[ "$COMMIT_MSG" =~ ^release-.* ]]; then
+            echo "ERROR: 'release-' prefix detected, but version is not a semantic version (e.g., release-welcome)."
+            echo "Skipping build and release pipeline."
+            exit 1
+          else
+            echo "NOTICE: Not a release commit. Skipping pipeline."
+            exit 1
+          fi
+
+      # 3. Diagnostic Log: Environment Details
+      - name: Log Environment Details
+        run: |
+          echo "=== Pipeline Context ==="
+          echo "Target Version to Release: v${{ steps.parse_version.outputs.version }}"
+          echo "Triggered by Commit: $GITHUB_SHA"
+
+      # 4. Set up Java Environment
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # 5. Setup Gradle and Cache dependencies
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      # 6. Grant execute permission for Gradle Wrapper
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x ./gradlew
+
+      # 7. Run Code Quality Checks
+      - name: Run Linter and Unit Tests
+        run: ./gradlew lintRelease testReleaseUnitTest
+
+      # 8. Build the Unsigned Release APK
+      - name: Build Unsigned Release APK
+        run: ./gradlew :app:assembleRelease
+
+      # 9. Diagnostic Log: Locate and inspect generated APKs
+      - name: Log Build Artifacts
+        id: locate_apk
+        run: |
+          echo "=== Inspecting Build Output Directory ==="
+          if [ -d "app/build/outputs/apk/release" ]; then
+            ls -la app/build/outputs/apk/release
+            APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
+            echo "Found APK path: $APK_PATH"
+            echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+          else
+            echo "ERROR: Target release build directory not found."
+            exit 1
+          fi
+
+      # 10. Create GitHub Release using extracted version
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.parse_version.outputs.version }}
+          name: Release v${{ steps.parse_version.outputs.version }}
+          draft: false
+          prerelease: false
+          files: ${{ steps.locate_apk.outputs.apk_path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

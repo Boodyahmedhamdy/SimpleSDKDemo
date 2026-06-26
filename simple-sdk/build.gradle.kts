@@ -30,6 +30,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
 
     implementation(project(":services:payment:api"))
-    implementation(project(":services:cardreader:api"))
-    implementation(project(":services:printer:api"))
+    implementation(libs.cardreader.api)
+    implementation(libs.printer.api)
 }
