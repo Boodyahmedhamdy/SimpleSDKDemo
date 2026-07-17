@@ -93,11 +93,25 @@ jobs:
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
 
-      # 7. Run Code Quality Checks
+      # 7. Publish SDK Artifacts to Maven Local
+      - name: Publish SDK Artifacts to Maven Local
+        run: |
+          echo "=========================================================="
+          echo "  PUBLISHING TO MAVEN LOCAL  "
+          echo "  Timestamp: $(date -u)"
+          echo "=========================================================="
+          
+          ./gradlew publishToMavenLocal
+          
+          echo "=========================================================="
+          echo "  PUBLISHING COMPLETED  "
+          echo "=========================================================="
+
+      # 8. Run Code Quality Checks (Optional/Commented out)
 #      - name: Run Linter and Unit Tests
 #        run: ./gradlew lintRelease testReleaseUnitTest
 
-      # 8. Build the Unsigned Release APK with Real-Time Console Logging
+      # 9. Build the Unsigned Release APK with Real-Time Console Logging
       - name: Build Unsigned Release APK
         run: |
           echo "=========================================================="
@@ -112,7 +126,7 @@ jobs:
           echo "  GRADLE BUILD COMPLETED SUCCESSFULLY  "
           echo "=========================================================="
 
-      # 9. Diagnostic Log: Locate and inspect generated APKs
+      # 10. Diagnostic Log: Locate and inspect generated APKs
       - name: Log Build Artifacts
         id: locate_apk
         run: |
@@ -127,7 +141,7 @@ jobs:
             exit 1
           fi
 
-      # 10. Generate Dokka HTML documentation
+      # 11. Generate Dokka HTML documentation
       - name: Generate Dokka HTML Documentation
         run: |
           echo "=========================================================="
@@ -142,21 +156,21 @@ jobs:
           echo "  DOKKA HTML GENERATION COMPLETED SUCCESSFULLY  "
           echo "=========================================================="
 
-      # 11. Zip Dokka HTML Documentation
+      # 12. Zip Dokka HTML Documentation
       - name: Zip Dokka Documentation
         run: |
           echo "=== Zipping Dokka HTML Documentation ==="
           zip -r dokka-docs.zip docs
           ls -la dokka-docs.zip
 
-      # 12. Upload Dokka HTML Documentation as Artifact
+      # 13. Upload Dokka HTML Documentation as Artifact
       - name: Upload Dokka HTML Documentation
         uses: actions/upload-artifact@v4
         with:
           name: dokka-docs
           path: docs/
 
-      # 13. Create GitHub Release using extracted version
+      # 14. Create GitHub Release using extracted version
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -170,17 +184,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 14. Configure GitHub Pages
+      # 15. Configure GitHub Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v4
 
-      # 15. Upload GitHub Pages Artifact
+      # 16. Upload GitHub Pages Artifact
       - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/
 
-      # 16. Deploy to GitHub Pages
+      # 17. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
