@@ -1,15 +1,15 @@
 plugins {
     alias(libs.plugins.android.library)
+    id("maven-publish")
     id("org.jetbrains.dokka")
-    id("maven-publish") // Added: Applied maven-publish plugin
 }
 
 dokka {
-    this.moduleName.set("Printer-Impl")
+    this.moduleName.set("Biometrics-Impl")
 }
 
 android {
-    namespace = "com.aah.sdk.simplesdk.services.printer.impl"
+    namespace = "com.aah.sdk.simplesdk.services.biometrics.impl"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -26,28 +26,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    buildTypes {
-        getByName("release") {
-            // Enable code shrinking and obfuscation
-            isMinifyEnabled = true
-
-            // (Optional but recommended) Enable resource shrinking
-            // isShrinkResources = true
-
-            // Apply default Android optimization rules and custom rules
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro",
-                "consumer-rules.keep"
-            )
-        }
-    }
-
-    // Added: Configured AGP to package both release and debug variants into a single component
     publishing {
         multipleVariants("allBuildTypes") {
             includeBuildTypeValues("release", "debug")
-            withSourcesJar() // Automatically attaches the source code jar
+            withSourcesJar()
         }
     }
 }
@@ -60,19 +42,17 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 
-    implementation(libs.printer.api)
+    implementation(libs.biometrics.api)
 }
 
-// Added: Publication configuration linking variant components under version 0.0.1
 afterEvaluate {
     publishing {
         publications {
             register<MavenPublication>("allVariants") {
                 groupId = "com.aah.sdk.services"
-                artifactId = "printer-impl"
+                artifactId = "biometrics-impl"
                 version = "0.0.1"
 
-                // Binds the release and debug multi-variant artifacts to this publication
                 from(components["allBuildTypes"])
             }
         }

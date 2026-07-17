@@ -2,9 +2,11 @@ package com.aah.sdk.simplesdk.provider
 
 import com.aah.sdk.simplesdk.SimpleSDK
 import com.aah.sdk.simplesdk.services.cardreader.api.CardReaderService
+import com.aah.sdk.simplesdk.services.cardreader.impl.CardReaderServiceImpl
 
 import com.aah.sdk.simplesdk.services.payment.impl.PaymentServiceImpl
 import com.aah.sdk.simplesdk.services.printer.api.PrinterService
+import com.aah.sdk.simplesdk.services.printer.impl.PrinterServiceImpl
 
 
 class SimpleSDKProvider : SimpleSDK {

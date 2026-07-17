@@ -32,4 +32,5 @@ dependencies {
     implementation(project(":services:payment:api"))
     implementation(libs.cardreader.api)
     implementation(libs.printer.api)
+    implementation(libs.biometrics.api)
 }

@@ -27,9 +27,9 @@ android {
 
     // CHANGED: Configured AGP to expose both build types for publication
     publishing {
-        multipleVariants("allBuildTypes") {
-            includeBuildTypeValues("release", "debug")
-            withSourcesJar()
+        publishing {
+            singleVariant("debug")
+            singleVariant("release")
         }
     }
 }
@@ -46,13 +46,26 @@ dependencies {
 afterEvaluate {
     publishing {
         publications {
-            register<MavenPublication>("allVariants") {
-                groupId = "com.aah.sdk.services"
-                artifactId = "cardreader-api"
-                version = "0.0.1" // Both debug and release share this exact coordinate
+            // 1. Register the DEBUG publication
+            register<MavenPublication>("debug") {
+                groupId = "com.aah.sdk"
+                artifactId = "cardreader-api-debug" // Custom debug name
+                version = "1.0.0"
 
-                // Points to the multipleVariants component we defined inside the android block
-                from(components["allBuildTypes"])
+                afterEvaluate {
+                    from(components["debug"]) // Pulls the debug AAR and its dependencies
+                }
+            }
+
+            // 2. Register the RELEASE publication
+            register<MavenPublication>("release") {
+                groupId = "com.aah.sdk"
+                artifactId = "cardreader-api-release" // Custom release name
+                version = "1.0.0"
+
+                afterEvaluate {
+                    from(components["release"]) // Pulls the release AAR and its dependencies
+                }
             }
         }
     }

@@ -12,6 +12,7 @@ appcompat = "1.7.1"
 material = "1.10.0"
 printerApi = "0.0.1"
 cardreaderApi = "0.0.1"
+biometricsApi = "0.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,8 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 printer-api = { module = "com.aah.sdk.services:printer-api", version.ref = "printerApi" }
 printer-impl = { module = "com.aah.sdk.services:printer-impl", version.ref = "printerApi" }
+biometrics-api = { module = "com.aah.sdk.services:biometrics-api", version.ref = "biometricsApi" }
+biometrics-impl = { module = "com.aah.sdk.services:biometrics-impl", version.ref = "biometricsApi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

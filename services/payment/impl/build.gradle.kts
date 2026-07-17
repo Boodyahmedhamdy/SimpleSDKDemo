@@ -19,6 +19,24 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    buildTypes {
+        getByName("release") {
+            // Enable code shrinking and obfuscation
+            isMinifyEnabled = true
+
+            // (Optional but recommended) Enable resource shrinking
+            // isShrinkResources = true
+
+            // Apply default Android optimization rules and custom rules
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro",
+                "consumer-rules.keep"
+            )
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

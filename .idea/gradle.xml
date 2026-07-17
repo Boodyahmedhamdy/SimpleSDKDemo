@@ -11,6 +11,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/services" />
+            <option value="$PROJECT_DIR$/services/biometrics" />
+            <option value="$PROJECT_DIR$/services/biometrics/api" />
+            <option value="$PROJECT_DIR$/services/biometrics/impl" />
             <option value="$PROJECT_DIR$/services/cardreader" />
             <option value="$PROJECT_DIR$/services/cardreader/api" />
             <option value="$PROJECT_DIR$/services/cardreader/impl" />

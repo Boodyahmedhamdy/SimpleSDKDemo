@@ -26,19 +26,28 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    /*buildTypes {
-        release {
+    buildTypes {
+        getByName("release") {
+            // Enable code shrinking and obfuscation
             isMinifyEnabled = true
+
+            // (Optional but recommended) Enable resource shrinking
+            // isShrinkResources = true
+
+            // Apply default Android optimization rules and custom rules
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro",
+                "consumer-rules.keep"
+            )
         }
-    }*/
+    }
 
 
-    // CHANGED: Group both release and debug variants into a single component
+
     publishing {
-        multipleVariants("allBuildTypes") {
-            includeBuildTypeValues("release", "debug")
-            withSourcesJar()
-        }
+        singleVariant("debug")
+        singleVariant("release")
     }
 }
 
@@ -53,17 +62,29 @@ dependencies {
     implementation(libs.cardreader.api)
 }
 
-// CHANGED: Create one single publication coordinating both variants under version 0.0.1
 afterEvaluate {
     publishing {
         publications {
-            register<MavenPublication>("allVariants") {
-                groupId = "com.aah.sdk.services"
-                artifactId = "cardreader-impl"
-                version = "0.0.1" // Both debug and release share this exact coordinate
+            // 1. Register the DEBUG publication
+            register<MavenPublication>("debug") {
+                groupId = "com.aah.sdk"
+                artifactId = "cardreader-impl-debug" // Custom debug name
+                version = "1.0.0"
 
-                // Points to the multipleVariants component we defined inside the android block
-                from(components["allBuildTypes"])
+                afterEvaluate {
+                    from(components["debug"]) // Pulls the debug AAR and its dependencies
+                }
+            }
+
+            // 2. Register the RELEASE publication
+            register<MavenPublication>("release") {
+                groupId = "com.aah.sdk"
+                artifactId = "cardreader-impl-release" // Custom release name
+                version = "1.0.0"
+
+                afterEvaluate {
+                    from(components["release"]) // Pulls the release AAR and its dependencies
+                }
             }
         }
     }

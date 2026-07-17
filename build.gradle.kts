@@ -23,4 +23,6 @@ dependencies {
 
     dokka(project(":services:printer:api"))
     dokka(project(":services:printer:impl"))
+    dokka(project(":services:biometrics:api"))
+    dokka(project(":services:biometrics:impl"))
 }
