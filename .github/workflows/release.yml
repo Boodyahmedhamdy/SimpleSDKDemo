@@ -12,6 +12,8 @@ jobs:
     # Add this permissions block here:
     permissions:
       contents: write  # Allows the token to create tags and releases
+      pages: write     # Allows deploying to GitHub Pages
+      id-token: write  # Required for OIDC/authentication for GitHub Pages deployment
 
     steps:
       # 1. Checkout the source code
@@ -104,7 +106,36 @@ jobs:
             exit 1
           fi
 
-      # 10. Create GitHub Release using extracted version
+      # 10. Generate Dokka HTML documentation
+      - name: Generate Dokka HTML Documentation
+        run: |
+          echo "=========================================================="
+          echo "  STARTING GRADLE TASK: dokkaGenerateHtml  "
+          echo "  Timestamp: $(date -u)"
+          echo "=========================================================="
+          
+          # Run gradle with plain console formatting to make CI logs readable
+          ./gradlew dokkaGenerateHtml
+          
+          echo "=========================================================="
+          echo "  DOKKA HTML GENERATION COMPLETED SUCCESSFULLY  "
+          echo "=========================================================="
+
+      # 11. Zip Dokka HTML Documentation
+      - name: Zip Dokka Documentation
+        run: |
+          echo "=== Zipping Dokka HTML Documentation ==="
+          zip -r dokka-docs.zip docs
+          ls -la dokka-docs.zip
+
+      # 12. Upload Dokka HTML Documentation as Artifact
+      - name: Upload Dokka HTML Documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: dokka-docs
+          path: docs/
+
+      # 13. Create GitHub Release using extracted version
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -112,6 +143,23 @@ jobs:
           name: Release v${{ steps.parse_version.outputs.version }}
           draft: false
           prerelease: false
-          files: ${{ steps.locate_apk.outputs.apk_path }}
+          files: |
+            ${{ steps.locate_apk.outputs.apk_path }}
+            dokka-docs.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 14. Configure GitHub Pages
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
+      # 15. Upload GitHub Pages Artifact
+      - name: Upload GitHub Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      # 16. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
